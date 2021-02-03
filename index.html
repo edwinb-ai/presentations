@@ -32,7 +32,50 @@
                                         <li>Interacciones hidrodinámicas en dinámica
                                             Browniana.</li>
                                     </ol>
-
+                                </section>
+                                <section>
+                                    <h3>Definición</h3>
+                                    Sea \( A \) una matriz invertible de \( n \times n \), y sea
+                                    \( b \) un vector de dimensión \( n \), entonces, un
+                                    subespacio de Krylov de orden \( r \) está definido
+                                    como
+                                    \[\begin{equation}
+                                        \mathcal{K}_r(A, b) = \text{span} \{ b, Ab, A^2 b, A^3 b,
+                                        \dots, A^{r-1} b\}
+                                    \end{equation}
+                                    \]
+                                </section>
+                                <section>
+                                    <section>
+                                        <h3>Aproximaciones</h3>
+                                        Esto significa que podemos crear un subespacio
+                                        lineal usando solamente \( A, \) y \( b. \)
+                                    </section>
+                                    <section>
+                                        Para visualizar esto, podemos pensar en las series
+                                        de Taylor
+                                        \[
+                                        f(x-a)=\sum_{n=0}^{\infty}\frac{f^{(n)}(a)}{n!}(x-a)^n
+                                        \]
+                                    </section>
+                                    <section>
+                                        Las series de Taylor nos dan una buena
+                                        aproximación de la función \( f(x). \)
+                                    </section>
+                                    <section>
+                                        \[ e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} \]
+                                    </section>
+                                    <section>
+                                        \[ e^1 = \sum_{n=0}^{N=10}
+                                        \frac{1^n}{n!}=2.718281801146385 \]
+                                        \[ e = 2.718281828459045 \]
+                                    </section>
+                                    <section>
+                                        De la misma forma, el subespacio de Krylov \(
+                                        \mathcal{K}_r \) nos da
+                                        una buena aproximación del producto \( Ab. \)
+                                    </section>
+                                </section>
                                 </section>
 			</div>
 		</div>
@@ -41,6 +84,7 @@
 		<script src="reveal.js/plugin/notes/notes.js"></script>
 		<script src="reveal.js/plugin/markdown/markdown.js"></script>
 		<script src="reveal.js/plugin/highlight/highlight.js"></script>
+                <script src="reveal.js/plugin/math/math.js"></script>
 		<script>
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
@@ -49,7 +93,8 @@
 				hash: true,
 
 				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes,
+                                                        RevealMath ]
 			});
 		</script>
 	</body>
