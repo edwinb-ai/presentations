@@ -384,7 +384,8 @@
                                         \equiv 30 .\)</p>
                                     </section>
                                 </section>
-                                <section>
+                                <section data-background-color="rgb(220, 180, 130)">
+                                    <section>
                                     <pre><code data-trim data-noescape
                                     data-line-numbers="1-2|4|6|9|11-15|18|19|20|21">
                                     znorm = dnrm2( s,xr,1 )
@@ -409,6 +410,81 @@
                                     call dgemv( 'N',s,m,1.0_dp,vm,s,v,1,0.0_dp,res,1 )
                                     r = znorm * res
                                     </code></pre>
+                                    </section>
+                                   <section>
+                                       <img data-src="assets/repositorio.png">
+                                   </section>
+                               </section>
+                               <section>
+                                   <h2>Conclusiones</h2>
+                                   <ol>
+                                       <li><p class="fragment fade-in">Los métodos de subespacios de Krylov son
+                                           métodos iterativos para encontrar resultados
+                                           aproximados en sistemas lineales.</p></li>
+                                       <li><p class="fragment fade-in">Dependiendo de las propiedades de las matrices
+                                           (u <em>operadores lineales</em>), se deben
+                                           emplear variaciones de estos métodos.</p></li>
+                                       <li><p class="fragment fade-in">Se estudió un caso particular aplicado a la
+                                           dinámica Browniana.</p></li>
+                                   </ol>
+                               </section>
+                               <section>
+                                   <section>
+                                       <h2>¿Dónde encontrar estas implementaciones?</h2>
+                                   </section>
+                                   <section>
+                                       <h3>Fortran</h2>
+                                       <ul>
+                                           <li><a
+                                                   href="https://www.mcs.anl.gov/petsc/">PETSc/TAO</a>,
+                                               sistemas lineales, sistemas de ecuaciones
+                                               diferenciales ordinarias y parciales.
+                                               (Argonne National Laboratory)
+                                           </li>
+                                           <li>
+                                               <a
+                                                   href="https://www.caam.rice.edu/software/ARPACK/">ARPACK</a>
+                                               para aplicar métodos de subespacios de
+                                               Krylov para encontrar valores y vectores
+                                               propios de sistemas muy grandes. (Rice
+                                               University y Sandia National Laboratory)
+                                           </li>
+                                       </ul>
+                                   </section>
+                                   <section>
+                                       <h3>Python</h3>
+                                       <ul>
+                                           <li>
+                                               <a
+                                                   href="https://docs.scipy.org/doc/scipy/reference/sparse.linalg.html">Scipy</a>
+                                               , contiene una colección de estos métodos,
+                                               algunos son envolturas (e.g. ARPACK), pero
+                                               ya no es necesario implementarlos.
+                                           </li>
+                                       </ul>
+                                   </section>
+                                   <section>
+                                       <h3>Julia</h3>
+                                       <ul>
+                                           <li>
+                                           <a
+                                               href="https://github.com/JuliaLinearAlgebra/IterativeSolvers.jl">IterativeSolvers</a>
+                                           , es un paquete con una colección de rutinas
+                                           para sistemas lineales.
+                                           </li>
+                                           <li>
+                                               <a
+                                                   href="https://github.com/JuliaSmoothOptimizers/Krylov.jl">Krylov</a>
+                                               , acepta no solamente matrices, sino
+                                               cualquier tipo de operador lineal.
+                                           </li>
+                                       </ul>
+                                       <aside class="notes">
+                                           Julia es el lenguaje que más utilizo, si
+                                           alguien tiene interés en aprenderlo, o si
+                                           alguien más lo usa, avísenme, para platicar.
+                                       </aside>
+                                   </section>
                                </section>
 			</div>
 		</div>
