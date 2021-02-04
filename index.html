@@ -260,6 +260,110 @@
                                         <li>BiCGSTAB (Biconjugate gradient stabilized method)</li>
                                     </ol>
                                 </section>
+                                <section data-background-color="rgb(220, 180, 130)">
+                                    <h3>Dinámica Browniana</h3>
+                                    <section>
+                                        \[
+                                        \mathbf{r}(t+\Delta t)=\mathbf{r}(t)+\frac{\Delta
+                                        t}{k_B T} \mathbf{DF}+(\nabla \cdot \mathbf{D})
+                                        \Delta t + \mathbf{g}
+                                        \]
+                                        donde \( \langle \mathbf{g} \rangle = 0 \) y
+                                        \( \langle \mathbf{gg^T} \rangle = 2 \mathbf{D}\Delta t
+                                        .\)
+                                    </section>
+                                    <section>
+                                        Esto significa que \( \mathbf{g} \) sigue una
+                                        distribución normal <em>multivariada</em> con
+                                        vector de medias zero y matriz de covarianza \( 2
+                                        \mathbf{D}\Delta t .\)
+                                    </section>
+                                    <section>
+                                        Normalmente, esto se calcula así
+                                        \[
+                                        \mathbf{g}=\sqrt{2\Delta
+                                        t}\mathbf{y}=\sqrt{2\Delta t}\mathbf{Bz}
+                                        \]
+                                        con
+                                        \[
+                                        \mathbf{B}=\mathbf{BB^T}
+                                        \]
+                                        y \( \mathbf{z} \) sigue una distribución normal
+                                        estándar <em>univariada</em>.
+                                    </section>
+                                    <section>
+                                        En el algoritmo original de Ermak-McCammon, esto
+                                        se hace con una <b>descomposición de Cholesky</b>,
+                                        pero considerando que el tensor \( \mathbf{D} \)
+                                        es de tamaño \( 3n \times 3n \) con \( n \) el
+                                        número de partículas, esto se vuelve impráctico
+                                        rápidamente.
+                                    </section>
+                                    <section>
+                                        <p class="fragment fade-in">En el 2012, Ando <em>et al.</em> propusieron
+                                        emplear métodos de subespacios de Krylov.</p>
+                                        <p class="fragment fade-in">Se dieron cuenta que
+                                        el problema es calcular \( \mathbf{D^{1/2}}
+                                        .\)</p>
+                                        <p class="fragment highlight-red">Además, se
+                                        dieron cuenta que no necesitan saber exactamente
+                                        \( \mathbf{D^{1/2}} \) sino \( \mathbf{D^{1/2} z}
+                                        .\)</p>
+                                        <p class="fragment fade-up">Después de todo,
+                                        solamente son desplazamientos estocásticos, no
+                                        deben ser <em>precisos</em>, sino aproximados.</p>
+                                    </section>
+                                </section>
+                                <section data-background-color="rgb(220, 180, 130)">
+                                    <section>
+                                    <h3>Propuesta</h3>
+                                        Construir un subespacio de Krylov para realizar
+                                        esta aproximación, tal que
+                                        \[
+                                        \mathcal{K}_m(\mathbf{D, z})=\text{span } \{
+                                        \mathbf{z}, \mathbf{Dz}, \mathbf{D^{1/2}z}, \dots,
+                                        \mathbf{D^{m-1}z} \}
+                                        \]
+                                    </section>
+                                    <section>
+                                        <h3>Asignaciones</h3>
+                                        \[
+                                        \mathbf{z} \sim \mathcal{N}(0, \mathbf{I}) \\
+                                        j := 0 \text{ contador de bucle} \\
+                                        \qquad v_0 := \frac{\mathbf{z}}{\lVert
+                                        \mathbf{z}
+                                        \rVert} \\
+                                        m := 30 \text{ el tamaño del subespacio de Krylov}
+                                        \\
+                                        \]
+                                    </section>
+                                    <section>
+                                        \[
+                                        \begin{align}
+                                        & \text{inicia bucle, desde j hasta m} \\
+                                        & \qquad \mathbf{w} :=\mathbf{D} \mathbf{v}_j \\
+                                        & \qquad \text{si } j > 0 \\
+                                        & \qquad \quad \mathbf{w}=\mathbf{w}-h_{j-1,j} \mathbf{v}_{j-1}
+                                        \\
+                                        & \qquad h_{j,j}=\mathbf{w^T} \mathbf{v}_j \\
+                                        & \text{si } j < m \\
+                                        & \qquad \quad \mathbf{w}=\mathbf{w}-h_{j,j} \mathbf{v}_{j}
+                                        \\
+                                        & \qquad \quad h_{j+1,j}=h_{j,j+1}=\lVert
+                                         \mathbf{w} \rVert \\
+                                         & \qquad \quad
+                                         \mathbf{v}_{j+1}=\frac{\mathbf{w}}{h_{j+1,j}} \\
+                                        \end{align}
+                                        \]
+                                    </section>
+                                    <section>
+                                        El resultado aproximado es
+                                        \[
+                                        \widetilde{\mathbf{y}} = \lVert \mathbf{z} \rVert \mathbf{V}_m
+                                        \mathbf{H}_m^{1/2} \mathbf{e}_1
+                                        \]
+                                    </section>
+                                </section>
 			</div>
 		</div>
 
