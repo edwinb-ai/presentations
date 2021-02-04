@@ -82,8 +82,74 @@
                                     </section>
                                     <section>
                                         <h3>Regresión lineal</h3>
-                                        Se quiere resolver el problema de optimización
+                                        Se quiere resolver el problema 
                                         \[ \mathbf{y}=\mathbf{X \beta} + \mathbf{\epsilon} \]
+                                        <aside class="notes">
+                                            Epsilon es un "ruido blanco", o "ruido
+                                            gaussiano". Es ruido en las mediciones.
+                                        </aside>
+                                    </section>
+                                    <section>
+                                        <img src="assets/regression.png">
+                                    </section>
+                                    <section>
+                                        Si se reorganiza el problema a un <b>sistema
+                                            lineal</b>
+                                        \[ \mathbf{X^T y} = \mathbf{X^T X \beta} \]
+                                        donde ahora se multiplica por la matriz
+                                        transpuesta para que la matriz \( X^T X \) sea una
+                                        matriz cuadrada<a href="#footnote-1">[1]</a>.
+                                        <aside class="notes">
+                                            Esta matriz se conoce como matriz normal o
+                                            matriz de cofactores de beta
+                                        </aside>
+                                    </section>
+                                    <section>
+                                        Para problemas pequeños, la solución al problema
+                                        es simple. Uno de lo más conocidos es mediante la
+                                        descomposición \( LU \).
+                                    </section>
+                                    <section>
+                                        Toda matriz cuadrada tiene descomposición
+                                        \[ PA = LU \]
+                                        donde \( P \) es una matriz de permutaciones entre
+                                        las filas; \( L \) es una matriz triangular
+                                        <em>inferior</em>; y \( U \) es una matriz tringular
+                                        <em>superior</em>.
+                                    </section>
+                                    <section>
+                                        La solución es, entonces
+                                        \[ P \mathbf{y} = P \mathbf{X^T X \beta} = LU
+                                        \beta \]
+                                        Es decir, primero se resuelve el problema
+                                        \[ Lz = P\mathbf{y} \]
+                                        y luego
+                                        \[ U \mathbf{\beta} = z \]
+                                    </section>
+                                    <section>
+                                        Pero <b>¡ojo!</b>, nótese que la operación
+                                        \[ \mathbf{X^T \beta} \]
+                                        da como resultado a un vector, y aún más, ¡se
+                                        parece a nuestra definición de \( \mathcal{K}_r
+                                        \)!
+                                    </section>
+                                </section>
+                                <section>
+                                    <h3>Método del gradiente conjugado</h3>
+                                    <section>
+                                        Podemos entonces construir un subespacio de Krylov
+                                        tal que 
+                                        \[
+                                        \mathcal{K}_r (A^T A, A^T b) \equiv \text{span} \{
+                                        A^T b, (A^T A) A^T b, (A^T A)^2 A^T b, \\ (A^T A)^3 A^T b,
+                                        \dots, (A^T A)^{r-1} A^T b \}
+                                        \]
+                                    </section>
+                                    <section>
+                                        Dado que es un <em>espacio lineal</em> nos
+                                        preguntamos, entonces, ¿cuál es la
+                                        <b>mejor</b> combinación lineal que resuelve el
+                                        problema?
                                     </section>
                                 </section>
 			</div>
