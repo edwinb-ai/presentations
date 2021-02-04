@@ -140,9 +140,10 @@
                                         Podemos entonces construir un subespacio de Krylov
                                         tal que 
                                         \[
-                                        \mathcal{K}_r (A^T A, A^T b) \equiv \text{span} \{
-                                        A^T b, (A^T A) A^T b, (A^T A)^2 A^T b, \\ (A^T A)^3 A^T b,
-                                        \dots, (A^T A)^{r-1} A^T b \}
+                                        \mathcal{K}_r (\mathbf{X}^T \mathbf{X}, \mathbf{X}^T \beta) \equiv \text{span} \{
+                                        \mathbf{X}^T \beta, (\mathbf{X}^T \mathbf{X}) \mathbf{X}^T \beta, (\mathbf{X}^T \mathbf{X})^2 \mathbf{X}^T \beta,
+                                        \\ (\mathbf{X}^T \mathbf{X})^3 \mathbf{X}^T \beta,
+                                        \dots, (\mathbf{X}^T \mathbf{X})^{r-1} \mathbf{X}^T \beta \}
                                         \]
                                     </section>
                                     <section>
@@ -151,7 +152,96 @@
                                         <b>mejor</b> combinación lineal que resuelve el
                                         problema?
                                     </section>
+                                    <section>
+                                        El método del <b>gradiente conjugado</b> nos dice
+                                        que la mejor combinación es aquella donde se
+                                        cumpla que \( \mathbf{r} \) definido como
+                                        \[ \mathbf{r}=\mathbf{y} - \mathbf{X} \beta \]
+                                        y conocido como <em>residuo</em> sea
+                                        <b>ortogonal</b> a \( \mathcal{K}_r \).
+                                    </section>
+                                    <section>
+                                        Sin embargo, es impráctico crear todo el espacio \( \mathcal{K}_r \)
+                                        pues no se necesitan todos los vectores base.
+                                    </section>
+                                    <section>
+                                        La solución es simple, de forma iterativa, vamos
+                                        ortogonalizando (el proceso de Gram-Schmidt) hasta
+                                        que nuestra base tenga suficientes vectores tal
+                                        que cumpla nuestra condición.
+                                    </section>
+                                    <section>
+                                        Esta base tiene una propiedad, todo vector residuo
+                                        es un vector <b>conjugado</b> respecto a los
+                                        vectores del espacio \( \mathcal{K}_r \).
+                                    </section>
+                                    <section>
+                                        Esto significa que, mientras ortogonalizamos \( \mathcal{K}_r \)
+                                        iremos ortogonalizando el nuevo espacio \(
+                                        \mathcal{K}_{residuos} \).
+                                    </section>
                                 </section>
+                                <section>
+                                    <section>
+                                        <h3>Implementación</h3>
+                                        Este algoritmo es rápido, y tiene la gran ventaja
+                                        de que es fácil de implementar.
+                                    </section>
+                                    <section>
+                                        <h3>Definiciones y asignaciones</h3>
+                                        Sea \( A=\mathbf{X^T X} \) y \( \mathbf{b} =
+                                        \mathbf{X^T y} \),
+                                        entonces
+                                        \[
+                                        \begin{align}
+                                        & x_0 := \mathbf{0} \text{ solución inicial} \\
+                                        & \mathbf{r}_0 := \mathbf{b} - \mathbf{A x}_0 \\
+                                        & \hbox{si } \mathbf{r}_{0} \text{ es
+                                        suficientemente
+                                        pequeño, concluir el proceso} \\
+                                        & \text{regresar } \mathbf{x}_{0} \text{ como el resultado encontrado}\\
+                                        & \mathbf{p}_0 := \mathbf{r}_0 \\
+                                        & k := 0 \\
+                                        \end{align}
+                                        \]
+                                        Aquí, \( \mathbf{p} \) es la notación para los
+                                        vectores base que formarán el espacio lineal de
+                                        los residuos, \( \mathcal{K}_{residuos} \).
+                                    </section>
+                                    <section>
+                                        \[
+                                        \begin{align}
+                                        & \text{inicia bucle} \\
+                                        & \qquad \alpha_k := \frac{\mathbf{r}_k^\mathsf{T}
+                                        \mathbf{r}_k}{\mathbf{p}_k^\mathsf{T} \mathbf{A
+                                        p}_k}  \\
+                                        & \qquad \mathbf{x}_{k+1} := \mathbf{x}_k +
+                                        \alpha_k \mathbf{p}_k \\
+                                        & \qquad \mathbf{r}_{k+1} := \mathbf{r}_k -
+                                        \alpha_k \mathbf{A p}_k \\
+                                        & \qquad \hbox{si } \mathbf{r}_{k+1} \text{ es
+                                        suficientemente pequeño, salir del bucle} \\
+                                        & \qquad \beta_k :=
+                                        \frac{\mathbf{r}_{k+1}^\mathsf{T}
+                                        \mathbf{r}_{k+1}}{\mathbf{r}_k^\mathsf{T}
+                                        \mathbf{r}_k} \\
+                                        & \qquad \mathbf{p}_{k+1} := \mathbf{r}_{k+1} +
+                                        \beta_k \mathbf{p}_k \\
+                                        & \qquad k := k + 1 \\
+                                        & \text{termina bucle} \\
+                                        & \text{regresa } \mathbf{x}_{k+1} \text{ como el
+                                        resultado}
+                                        \end{align}
+                                        \]
+                                    </section>
+                                    <section>
+                                        <p class="fragment fade-out">\( \alpha_k \) son los
+                                        coeficientes de la combinación lineal en \(
+                                        \mathcal{K}_{residuos} \).</p>
+                                        <p class="fragment fade-in">\( \beta_k \) son los
+                                        coeficientes de la combinación lineal en \(
+                                        \mathcal{K}_r \).</p>
+                                    </section>
 			</div>
 		</div>
 
