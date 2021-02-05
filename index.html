@@ -27,8 +27,8 @@
                                     <ol>
                                         <li>¿Qué son los métodos de subespacios de
                                             Krylov?</li>
-                                        <li>Ejemplos: sistemas lineales y descomposición
-                                            espectral.</li>
+                                        <li>Ejemplos: sistemas lineales y regresión
+                                            lineal.</li>
                                         <li>Interacciones hidrodinámicas en dinámica
                                             Browniana.</li>
                                     </ol>
@@ -52,13 +52,15 @@
                                         del teorema de la inversa de una matriz. Una de
                                         ellas es que el determinante sea diferente de
                                         cero.
+
+                                        span = extendido
                                     </aside>
                                 </section>
                                 <section>
                                     <section>
                                         <h3>Aproximaciones</h3>
                                         Esto significa que podemos crear un subespacio
-                                        lineal usando solamente \( A, \) y \( b. \)
+                                        lineal usando solamente el producto \( Ab. \)
                                     </section>
                                     <section>
                                         Para visualizar esto, podemos pensar en las series
@@ -78,11 +80,16 @@
                                         \[ e^1 = \sum_{n=0}^{N=10}
                                         \frac{1^n}{n!}=2.718281801146385 \]
                                         \[ e = 2.718281828459045 \]
+                                        <aside class="notes">
+                                            Se obtiene una buena aproximación hasta la
+                                            séptima cifra.
+                                        </aside>
                                     </section>
                                     <section>
                                         De la misma forma, el subespacio de Krylov \(
-                                        \mathcal{K}_r \) nos da
-                                        una buena aproximación del producto \( Ab. \)
+                                        \mathcal{K}_r \) nos permite construir un espacio
+                                        donde, con pocos vectores base, podemos encontrar
+                                        una buena aproximación.
                                     </section>
                                 </section>
                                 <section>
@@ -99,10 +106,10 @@
                                         </aside>
                                     </section>
                                     <section>
-                                        <img src="assets/regression.png">
+                                        <img src="assets/regression.png"/>
                                     </section>
                                     <section>
-                                        Si se reorganiza el problema a un <b>sistema
+                                        Se reorganiza el problema a un <b>sistema
                                             lineal</b>
                                         \[ \mathbf{X^T y} = \mathbf{X^T X \beta} \]
                                         donde ahora se multiplica por la matriz
@@ -150,7 +157,9 @@
                                         tal que 
                                         \[
                                         \mathcal{K}_r (\mathbf{X}^T \mathbf{X}, \mathbf{X}^T \beta) \equiv \text{span} \{
-                                        \mathbf{X}^T \beta, (\mathbf{X}^T \mathbf{X}) \mathbf{X}^T \beta, (\mathbf{X}^T \mathbf{X})^2 \mathbf{X}^T \beta,
+                                        \mathbf{X}^T \beta, (\mathbf{X}^T \mathbf{X})
+                                        \mathbf{X}^T \beta, \\
+                                        (\mathbf{X}^T \mathbf{X})^2 \mathbf{X}^T \beta,
                                         \\ (\mathbf{X}^T \mathbf{X})^3 \mathbf{X}^T \beta,
                                         \dots, (\mathbf{X}^T \mathbf{X})^{r-1} \mathbf{X}^T \beta \}
                                         \]
@@ -177,7 +186,8 @@
                                         La solución es simple, de forma iterativa, vamos
                                         ortogonalizando (el proceso de Gram-Schmidt) hasta
                                         que nuestra base tenga suficientes vectores tal
-                                        que cumpla nuestra condición.
+                                        que el resultado es <em>suficientemente
+                                        bueno</em>.
                                     </section>
                                     <section>
                                         Esta base tiene una propiedad, todo vector residuo
@@ -205,10 +215,6 @@
                                         \begin{align}
                                         & x_0 := \mathbf{0} \text{ solución inicial} \\
                                         & \mathbf{r}_0 := \mathbf{b} - \mathbf{A x}_0 \\
-                                        & \hbox{si } \mathbf{r}_{0} \text{ es
-                                        suficientemente
-                                        pequeño, concluir el proceso} \\
-                                        & \text{regresar } \mathbf{x}_{0} \text{ como el resultado encontrado}\\
                                         & \mathbf{p}_0 := \mathbf{r}_0 \\
                                         & k := 0 \\
                                         \end{align}
@@ -295,7 +301,7 @@
                                         \]
                                         con
                                         \[
-                                        \mathbf{B}=\mathbf{BB^T}
+                                        \mathbf{D}=\mathbf{BB^T}
                                         \]
                                         y \( \mathbf{z} \) sigue una distribución normal
                                         estándar <em>univariada</em>.
@@ -314,7 +320,7 @@
                                         <p class="fragment fade-in">Se dieron cuenta que
                                         el problema es calcular \( \mathbf{D^{1/2}}
                                         .\)</p>
-                                        <p class="fragment highlight-red">Además, se
+                                        <p class="fragment fade-in">Además, se
                                         dieron cuenta que no necesitan saber exactamente
                                         \( \mathbf{D^{1/2}} \) sino \( \mathbf{D^{1/2} z}
                                         .\)</p>
@@ -412,7 +418,7 @@
                                     </code></pre>
                                     </section>
                                    <section>
-                                       <img data-src="assets/repositorio.png">
+                                       <img data-src="assets/repositorio.png"/>
                                    </section>
                                </section>
                                <section>
@@ -420,7 +426,7 @@
                                    <ol>
                                        <li><p class="fragment fade-in">Los métodos de subespacios de Krylov son
                                            métodos iterativos para encontrar resultados
-                                           aproximados en sistemas lineales.</p></li>
+                                           aproximados.</p></li>
                                        <li><p class="fragment fade-in">Dependiendo de las propiedades de las matrices
                                            (u <em>operadores lineales</em>), se deben
                                            emplear variaciones de estos métodos.</p></li>
@@ -485,6 +491,43 @@
                                            alguien más lo usa, avísenme, para platicar.
                                        </aside>
                                    </section>
+                               </section>
+                               <section>
+                                   <h2>Proyectos</h2>
+                                       <ul>
+                                           <li><a
+                                                   href="https://github.com/edwinb-ai/dbfort">dbfort</a>
+                                                Dinámica Browniana en Fortran 2008+.
+                                           </li>
+                                           <li>
+                                               <a
+                                                   href="https://github.com/edwinb-ai/LeastSquaresSVM">LeastSquaresSVM</a>
+                                               Machine Learning con Máquinas de Soporte
+                                               Vectorial.
+                                           </li>
+                                       </ul>
+                                       <ul class="social-icons">
+                                           <li><a
+                                                   href="https://github.com/edwinb-ai"><img
+                                                   src="assets/github.svg"/>GitHub</a></li>
+                                           <li><a
+                                                   href="https://gitlab.com/developEdwin"><img
+                                                   src="assets/tanuki.svg"/>GitLab</a></li>
+                                           <li><img
+                                               src="assets/mail.svg"/>ea.bedollamontiel</li>
+                                       </ul>
+                                       <aside class="notes">
+                                           Aproximación es el nombre del juego, aunque las
+                                           computadoras cada vez se hacen más rápidas, los
+                                           problemas a resolver cada vez se hacen más
+                                           grandes. Espero que la semblanza de los métodos que he
+                                           mostrado hoy les ayuden a motivarse para
+                                           utilizarlos en su día a día. En caso
+                                           de que alguno de los proyectos les interese,
+                                           los invito a acercarse, dado que es una gran
+                                           oportunidad para colaborar y aprender sobre
+                                           estos métodos. Es todo de mi parte.
+                                       </aside>
                                </section>
 			</div>
 		</div>
