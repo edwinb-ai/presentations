@@ -1,4 +1,4 @@
-# Presentations and slide
+# Presentations and slides
 
 These are some of the presentations that I have been working on.
 
