@@ -267,15 +267,15 @@
                     <p class="fragment fade-in">\( \beta_k \) son los
                         coeficientes de la combinación lineal en \(
                         \mathcal{K}_r \).</p>
-                        <aside class="notes">
-                            Los alphas determinan la nueva solución. Se utilizan para
-                            construir una combinación lineal aproximada de las
-                            soluciones.
+                    <aside class="notes">
+                        Los alphas determinan la nueva solución. Se utilizan para
+                        construir una combinación lineal aproximada de las
+                        soluciones.
 
-                            Los betas determinan la combinación lineal de la nueva dirección
-                            de búsqueda, construyendo una combinación lineal usando las
-                            direcciones previas.
-                        </aside>
+                        Los betas determinan la combinación lineal de la nueva dirección
+                        de búsqueda, construyendo una combinación lineal usando las
+                        direcciones previas.
+                    </aside>
                 </section>
             </section>
             <section>
@@ -316,7 +316,7 @@
                     el tensor de Rotne-Prager-Yamakawa.
                 </section>
                 <section>
-                    Esto significa que \( \mathbf{g} \) sigue una
+                    \( \mathbf{g} \) son los desplazamientos estocásticos, que siguen una
                     distribución normal <em>multivariada</em> con
                     vector de medias zero y matriz de covarianza \( 2
                     \mathbf{D}\Delta t .\)
@@ -329,7 +329,7 @@
                     \]
                     con
                     \[
-                    \mathbf{D}=\mathbf{BB^T}
+                    \mathbf{D}=\mathbf{BB^{\mathsf{T}}}
                     \]
                     y \( \mathbf{z} \) sigue una distribución normal
                     estándar <em>univariada</em>.
@@ -345,11 +345,14 @@
                 <section>
                     <p class="fragment fade-in">En el 2012, Ando <em>et al.</em> propusieron
                         emplear métodos de subespacios de Krylov.</p>
-                    <p class="fragment fade-in">Se dieron cuenta que
+                    <p class="fragment fade-in">
+                        Se dieron cuenta que
                         el problema es calcular \( \mathbf{D^{1/2}}
-                        .\)</p>
+                        ,\) esto porque
+                        \(\mathbf{D}=\mathbf{D^{1/2}} \mathbf{(D^{1/2})}^{\mathsf{T}} \)
+                    </p>
                     <p class="fragment fade-in">Además, se
-                        dieron cuenta que no necesitan saber exactamente
+                        dieron cuenta que no necesitan saber
                         \( \mathbf{D^{1/2}} \) sino \( \mathbf{D^{1/2} z}
                         .\)</p>
                     <p class="fragment fade-up">Después de todo,
@@ -443,25 +446,6 @@
                     </section>
                 </section>
                 <section>
-                    <h2>Conclusiones</h2>
-                    <ol>
-                        <li>
-                            <p class="fragment fade-in">Los métodos de subespacios de Krylov son
-                                métodos iterativos para encontrar resultados
-                                aproximados.</p>
-                        </li>
-                        <li>
-                            <p class="fragment fade-in">Dependiendo de las propiedades de las matrices
-                                (u <em>operadores lineales</em>), se deben
-                                emplear variaciones de estos métodos.</p>
-                        </li>
-                        <li>
-                            <p class="fragment fade-in">Se estudió un caso particular aplicado a la
-                                dinámica Browniana.</p>
-                        </li>
-                    </ol>
-                </section>
-                <section>
                     <section>
                         <h2>¿Dónde encontrar estas implementaciones?</h2>
                     </section>
@@ -515,9 +499,28 @@
                     </section>
                 </section>
                 <section>
+                    <h2>Conclusiones</h2>
+                    <ol>
+                        <li>
+                            <p class="fragment fade-in">Los métodos de subespacios de Krylov son
+                                métodos iterativos para encontrar resultados
+                                aproximados.</p>
+                        </li>
+                        <li>
+                            <p class="fragment fade-in">Dependiendo de las propiedades de las matrices
+                                (u <em>operadores lineales</em>), se deben
+                                emplear variaciones de estos métodos.</p>
+                        </li>
+                        <li>
+                            <p class="fragment fade-in">Se estudió un caso particular aplicado a la
+                                dinámica Browniana.</p>
+                        </li>
+                    </ol>
+                </section>
+                <section>
                     <section>
                         <h3>Referencias</h3>
-                        <ol>
+                        <ul>
                             <li>Strang, G. (1993). <em>Introduction to linear algebra (Vol.
                                     3)</em>. Wellesley, MA: Wellesley-Cambridge Press.
                             </li>
@@ -536,11 +539,11 @@
                                     of conjugate gradients for solving linear
                                     systems</em> (Vol. 49, No. 1). Washington, DC: NBS.
                             </li>
-                        </ol>
+                        </ul>
                     </section>
                     <section>
                         <h3>Referencias</h3>
-                        <ol>
+                        <ul>
                             <li>
                                 Cipra, B. A. (2000). The best of the 20th
                                 century: Editors name top 10 algorithms.
@@ -559,6 +562,11 @@
                                 interactions. <em>The Journal of chemical
                                     physics</em>, 69(4), 1352-1360.
                             </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Referencias</h3>
+                        <ul>
                             <li>
                                 Ando, T., Chow, E., Saad, Y., &amp; Skolnick,
                                 J. (2012). Krylov subspace methods for
@@ -570,7 +578,13 @@
                                 Shewchuk, J. (1994). An Introduction to the Conjugate Gradient
                                 Method Without the Agonizing Pain.
                             </li>
-                        </ol>
+                            <li>
+                                Yamakawa, H. (1970). Transport Properties of Polymer Chains
+                                in Dilute Solution: Hydrodynamic Interaction.
+                                <em>The Journal of Chemical Physics</em>, 53(1), 436–443.
+                                https://doi.org/10.1063/1.1673799
+                            </li>
+                        </ul>
                     </section>
                 </section>
                 <section>
@@ -589,6 +603,7 @@
                         <li><a href="https://github.com/edwinb-ai"><img src="assets/github.svg" />GitHub</a></li>
                         <li><a href="https://gitlab.com/developEdwin"><img src="assets/tanuki.svg" />GitLab</a></li>
                         <li><img src="assets/mail.svg" />ea.bedollamontiel</li>
+                        <li><a href="https://t.me/edwinb13"><img src="assets/telegram.svg"/>@edwinb13</a></li>
                     </ul>
                     <aside class="notes">
                         Aproximación es el nombre del juego, aunque las
@@ -600,7 +615,7 @@
                         de que alguno de los proyectos les interese,
                         los invito a acercarse, dado que es una gran
                         oportunidad para colaborar y aprender sobre
-                        estos métodos. Es todo de mi parte.
+                        estos métodos.
                     </aside>
                 </section>
         </div>
