@@ -29,7 +29,11 @@
                 <ol>
                     <li>¿Qué son los métodos de subespacios de
                         Krylov?</li>
-                    <li>Ejemplos: sistemas lineales y regresión
+                    <ul>
+                        <li>¿En qué problemas se pueden emplearse?</li>
+                        <li>¿Cómo se implementan?</li>
+                    </ul>
+                    <li><em>Ejemplos:</em> sistemas lineales y regresión
                         lineal.</li>
                     <li>Interacciones hidrodinámicas en dinámica
                         Browniana.</li>
@@ -100,7 +104,9 @@
                 <section>
                     <h3>Regresión lineal</h3>
                     Se quiere resolver el problema
-                    \[ \mathbf{y}=\mathbf{X \beta} + \mathbf{\epsilon} \]
+                    \[ \mathbf{y}=\mathbf{X \beta} + \alpha + \mathbf{\epsilon} \]
+                    donde \( \beta \) es el <em>vector de coeficientes</em> y
+                    \( \alpha \) es conocido como el <em>sesgo</em> u <em>ordenada al origen.</em>
                     <aside class="notes">
                         Epsilon es un "ruido blanco", o "ruido
                         gaussiano". Es ruido en las mediciones.
@@ -112,13 +118,16 @@
                 <section>
                     Se reorganiza el problema a un <b>sistema
                         lineal</b>
-                    \[ \mathbf{X^T y} = \mathbf{X^T X \beta} \]
+                    \[ \mathbf{X^{\mathsf{T}} y} = \mathbf{X^{\mathsf{T}} X \beta} \]
                     donde ahora se multiplica por la matriz
-                    transpuesta para que la matriz \( X^T X \) sea una
+                    transpuesta para que la matriz \( X^{\mathsf{T}} X \) sea una
                     matriz cuadrada.
                     <aside class="notes">
                         Esta matriz se conoce como matriz normal o
-                        matriz de cofactores de beta
+                        matriz de cofactores de beta.
+
+                        Aquí la matrix X absorbió el sesgo, por lo tanto la matriz
+                        es ahora rectangular.
                     </aside>
                 </section>
                 <section>
@@ -136,7 +145,7 @@
                 </section>
                 <section>
                     La solución es, entonces
-                    \[ P \mathbf{y} = P \mathbf{X^T X \beta} = LU
+                    \[ P \mathbf{y} = P \mathbf{X^{\mathsf{T}} X \beta} = LU
                     \beta \]
                     Es decir, primero se resuelve el problema
                     \[ Lz = P\mathbf{y} \]
@@ -145,7 +154,7 @@
                 </section>
                 <section>
                     Pero <b>¡ojo!</b>, nótese que la operación
-                    \[ \mathbf{X^T \beta} \]
+                    \[ \mathbf{X^{\mathsf{T}} \beta} \]
                     da como resultado a un vector, y aún más, ¡se
                     parece a nuestra definición de \( \mathcal{K}_r
                     \)!
@@ -157,12 +166,13 @@
                     Podemos entonces construir un subespacio de Krylov
                     tal que
                     \[
-                    \mathcal{K}_r (\mathbf{X}^T \mathbf{X}, \mathbf{X}^T \beta) \equiv \text{span} \{
-                    \mathbf{X}^T \beta, (\mathbf{X}^T \mathbf{X})
-                    \mathbf{X}^T \beta, \\
-                    (\mathbf{X}^T \mathbf{X})^2 \mathbf{X}^T \beta,
-                    \\ (\mathbf{X}^T \mathbf{X})^3 \mathbf{X}^T \beta,
-                    \dots, (\mathbf{X}^T \mathbf{X})^{r-1} \mathbf{X}^T \beta \}
+                    \mathcal{K}_r (\mathbf{X}^{\mathsf{T}} \mathbf{X}, \mathbf{X}^{\mathsf{T}} \beta) \equiv \text{span}
+                    \{
+                    \mathbf{X}^{\mathsf{T}} \beta, (\mathbf{X}^{\mathsf{T}} \mathbf{X})
+                    \mathbf{X}^{\mathsf{T}} \beta, \\
+                    (\mathbf{X}^{\mathsf{T}} \mathbf{X})^2 \mathbf{X}^{\mathsf{T}} \beta,
+                    \\ (\mathbf{X}^{\mathsf{T}} \mathbf{X})^3 \mathbf{X}^{\mathsf{T}} \beta,
+                    \dots, (\mathbf{X}^{\mathsf{T}} \mathbf{X})^{r-1} \mathbf{X}^{\mathsf{T}} \beta \}
                     \]
                 </section>
                 <section>
@@ -185,7 +195,7 @@
                 </section>
                 <section>
                     La solución es simple, de forma iterativa, vamos
-                    ortogonalizando (el proceso de Gram-Schmidt) hasta
+                    ortogonalizando (semejante al proceso de Gram-Schmidt) hasta
                     que nuestra base tenga suficientes vectores tal
                     que el resultado es <em>suficientemente
                         bueno</em>.
@@ -209,8 +219,8 @@
                 </section>
                 <section>
                     <h3>Definiciones y asignaciones</h3>
-                    Sea \( A=\mathbf{X^T X} \) y \( \mathbf{b} =
-                    \mathbf{X^T y} \),
+                    Sea \( A=\mathbf{X^{\mathsf{T}} X} \) y \( \mathbf{b} =
+                    \mathbf{X^{\mathsf{T}} y} \),
                     entonces
                     \[
                     \begin{align}
@@ -257,6 +267,15 @@
                     <p class="fragment fade-in">\( \beta_k \) son los
                         coeficientes de la combinación lineal en \(
                         \mathcal{K}_r \).</p>
+                        <aside class="notes">
+                            Los alphas determinan la nueva solución. Se utilizan para
+                            construir una combinación lineal aproximada de las
+                            soluciones.
+
+                            Los betas determinan la combinación lineal de la nueva dirección
+                            de búsqueda, construyendo una combinación lineal usando las
+                            direcciones previas.
+                        </aside>
                 </section>
             </section>
             <section>
@@ -539,6 +558,11 @@
                                 computing hydrodynamic interactions in
                                 Brownian dynamics simulations. <em>The Journal
                                     of chemical physics</em>, 137(6), 064106.
+                            </li>
+                            <li>
+                                Shewchuk, J. (1994). An Introduction to the Conjugate Gradient
+                                Method Without the Agonizing Pain.
+                            </li>
                         </ol>
                     </section>
                 </section>
