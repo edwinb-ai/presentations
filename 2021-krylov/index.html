@@ -1,398 +1,393 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="../reveal.js/dist/reset.css">
-		<link rel="stylesheet" href="../reveal.js/dist/reveal.css">
-		<link rel="stylesheet" href="custom-serif.css" id="theme">
+    <title>reveal.js</title>
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="../reveal.js/plugin/highlight/monokai.css" id="highlight-theme">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section id="title">
-                                    <h2>Métodos de subespacios de Krylov</h2>
-                                    <h4>y sus aplicaciones a la Dinámica Browniana</h4>
-                                    <h3>Edwin Armando Bedolla Montiel</h3>
-                                    <h5>12 de febrero, 2021, Grupo de Materia Blanda.</h5>
-                                </section>
-				<section id="toc">
-                                    <h3>Contenido</h3>
-                                    <ol>
-                                        <li>¿Qué son los métodos de subespacios de
-                                            Krylov?</li>
-                                        <li>Ejemplos: sistemas lineales y regresión
-                                            lineal.</li>
-                                        <li>Interacciones hidrodinámicas en dinámica
-                                            Browniana.</li>
-                                    </ol>
-                                </section>
-                                <section>
-                                    <h3>Definición</h3>
-                                    Sea \( A \) una matriz invertible de \( n \times n \), y sea
-                                    \( b \) un vector de dimensión \( n \), entonces, un
-                                    subespacio de Krylov de orden \( r \) está definido
-                                    como
-                                    \[\begin{equation}
-                                        \mathcal{K}_r(A, b) = \text{span} \{ b, Ab, A^2 b, A^3 b,
-                                        \dots, A^{r-1} b\}
-                                    \end{equation}
-                                    \]
-                                    <aside class="notes">
-                                        Una matriz es invertible si se cumplen cualquiera
-                                        de las <a
-                                                   href="https://mathworld.wolfram.com/InvertibleMatrixTheorem.html">23
-                                                   características</a>
-                                        del teorema de la inversa de una matriz. Una de
-                                        ellas es que el determinante sea diferente de
-                                        cero.
+    <link rel="stylesheet" href="../reveal.js/dist/reset.css">
+    <link rel="stylesheet" href="../reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="custom-serif.css" id="theme">
 
-                                        span = extendido
-                                    </aside>
-                                </section>
-                                <section>
-                                    <section>
-                                        <h3>Aproximaciones</h3>
-                                        Esto significa que podemos crear un subespacio
-                                        lineal usando solamente el producto \( Ab. \)
-                                    </section>
-                                    <section>
-                                        Para visualizar esto, podemos pensar en las series
-                                        de Taylor
-                                        \[
-                                        f(x-a)=\sum_{n=0}^{\infty}\frac{f^{(n)}(a)}{n!}(x-a)^n
-                                        \]
-                                    </section>
-                                    <section>
-                                        Las series de Taylor nos dan una buena
-                                        aproximación de la función \( f(x). \)
-                                    </section>
-                                    <section>
-                                        \[ e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} \]
-                                    </section>
-                                    <section>
-                                        \[ e^1 = \sum_{n=0}^{N=10}
-                                        \frac{1^n}{n!}=2.718281801146385 \]
-                                        \[ e = 2.718281828459045 \]
-                                        <aside class="notes">
-                                            Se obtiene una buena aproximación hasta la
-                                            séptima cifra.
-                                        </aside>
-                                    </section>
-                                    <section>
-                                        De la misma forma, el subespacio de Krylov \(
-                                        \mathcal{K}_r \) nos permite construir un espacio
-                                        donde, con pocos vectores base, podemos encontrar
-                                        una buena aproximación.
-                                    </section>
-                                </section>
-                                <section>
-                                    <section>
-                                    ¿En qué tipo de <b>problemas</b> puedo aplicar estos métodos?
-                                    </section>
-                                    <section>
-                                        <h3>Regresión lineal</h3>
-                                        Se quiere resolver el problema 
-                                        \[ \mathbf{y}=\mathbf{X \beta} + \mathbf{\epsilon} \]
-                                        <aside class="notes">
-                                            Epsilon es un "ruido blanco", o "ruido
-                                            gaussiano". Es ruido en las mediciones.
-                                        </aside>
-                                    </section>
-                                    <section>
-                                        <img src="assets/regression.png"/>
-                                    </section>
-                                    <section>
-                                        Se reorganiza el problema a un <b>sistema
-                                            lineal</b>
-                                        \[ \mathbf{X^T y} = \mathbf{X^T X \beta} \]
-                                        donde ahora se multiplica por la matriz
-                                        transpuesta para que la matriz \( X^T X \) sea una
-                                        matriz cuadrada.
-                                        <aside class="notes">
-                                            Esta matriz se conoce como matriz normal o
-                                            matriz de cofactores de beta
-                                        </aside>
-                                    </section>
-                                    <section>
-                                        Para problemas pequeños, la solución al problema
-                                        es simple. Uno de lo más conocidos es mediante la
-                                        descomposición \( LU \).
-                                    </section>
-                                    <section>
-                                        Toda matriz cuadrada tiene descomposición
-                                        \[ PA = LU \]
-                                        donde \( P \) es una matriz de permutaciones entre
-                                        las filas; \( L \) es una matriz triangular
-                                        <em>inferior</em>; y \( U \) es una matriz tringular
-                                        <em>superior</em>.
-                                    </section>
-                                    <section>
-                                        La solución es, entonces
-                                        \[ P \mathbf{y} = P \mathbf{X^T X \beta} = LU
-                                        \beta \]
-                                        Es decir, primero se resuelve el problema
-                                        \[ Lz = P\mathbf{y} \]
-                                        y luego
-                                        \[ U \mathbf{\beta} = z \]
-                                    </section>
-                                    <section>
-                                        Pero <b>¡ojo!</b>, nótese que la operación
-                                        \[ \mathbf{X^T \beta} \]
-                                        da como resultado a un vector, y aún más, ¡se
-                                        parece a nuestra definición de \( \mathcal{K}_r
-                                        \)!
-                                    </section>
-                                </section>
-                                <section>
-                                    <h3>Método del gradiente conjugado</h3>
-                                    <section>
-                                        Podemos entonces construir un subespacio de Krylov
-                                        tal que 
-                                        \[
-                                        \mathcal{K}_r (\mathbf{X}^T \mathbf{X}, \mathbf{X}^T \beta) \equiv \text{span} \{
-                                        \mathbf{X}^T \beta, (\mathbf{X}^T \mathbf{X})
-                                        \mathbf{X}^T \beta, \\
-                                        (\mathbf{X}^T \mathbf{X})^2 \mathbf{X}^T \beta,
-                                        \\ (\mathbf{X}^T \mathbf{X})^3 \mathbf{X}^T \beta,
-                                        \dots, (\mathbf{X}^T \mathbf{X})^{r-1} \mathbf{X}^T \beta \}
-                                        \]
-                                    </section>
-                                    <section>
-                                        Dado que es un <em>espacio lineal</em> nos
-                                        preguntamos, entonces, ¿cuál es la
-                                        <b>mejor</b> combinación lineal que resuelve el
-                                        problema?
-                                    </section>
-                                    <section>
-                                        El método del <b>gradiente conjugado</b> nos dice
-                                        que la mejor combinación es aquella donde se
-                                        cumpla que \( \mathbf{r} \) definido como
-                                        \[ \mathbf{r}=\mathbf{y} - \mathbf{X} \beta \]
-                                        y conocido como <em>residuo</em> sea
-                                        <b>ortogonal</b> a \( \mathcal{K}_r \).
-                                    </section>
-                                    <section>
-                                        Sin embargo, es impráctico crear todo el espacio \( \mathcal{K}_r \)
-                                        pues no se necesitan todos los vectores base.
-                                    </section>
-                                    <section>
-                                        La solución es simple, de forma iterativa, vamos
-                                        ortogonalizando (el proceso de Gram-Schmidt) hasta
-                                        que nuestra base tenga suficientes vectores tal
-                                        que el resultado es <em>suficientemente
-                                        bueno</em>.
-                                    </section>
-                                    <section>
-                                        Esta base tiene una propiedad, todo vector residuo
-                                        es un vector <b>conjugado</b> respecto a los
-                                        vectores del espacio \( \mathcal{K}_r \).
-                                    </section>
-                                    <section>
-                                        Esto significa que, mientras ortogonalizamos \( \mathcal{K}_r \)
-                                        iremos ortogonalizando el nuevo espacio \(
-                                        \mathcal{K}_{residuos} \).
-                                    </section>
-                                </section>
-                                <section>
-                                    <section>
-                                        <h3>Implementación</h3>
-                                        Este algoritmo es rápido, y tiene la gran ventaja
-                                        de que es fácil de implementar.
-                                    </section>
-                                    <section>
-                                        <h3>Definiciones y asignaciones</h3>
-                                        Sea \( A=\mathbf{X^T X} \) y \( \mathbf{b} =
-                                        \mathbf{X^T y} \),
-                                        entonces
-                                        \[
-                                        \begin{align}
-                                        & x_0 := \mathbf{0} \text{ solución inicial} \\
-                                        & \mathbf{r}_0 := \mathbf{b} - \mathbf{A x}_0 \\
-                                        & \mathbf{p}_0 := \mathbf{r}_0 \\
-                                        & k := 0 \\
-                                        \end{align}
-                                        \]
-                                        Aquí, \( \mathbf{p} \) es la notación para los
-                                        vectores base que formarán el espacio lineal de
-                                        los residuos, \( \mathcal{K}_{residuos} \).
-                                    </section>
-                                    <section>
-                                        \[
-                                        \begin{align}
-                                        & \text{inicia bucle} \\
-                                        & \qquad \alpha_k := \frac{\mathbf{r}_k^\mathsf{T}
-                                        \mathbf{r}_k}{\mathbf{p}_k^\mathsf{T} \mathbf{A
-                                        p}_k}  \\
-                                        & \qquad \mathbf{x}_{k+1} := \mathbf{x}_k +
-                                        \alpha_k \mathbf{p}_k \\
-                                        & \qquad \mathbf{r}_{k+1} := \mathbf{r}_k -
-                                        \alpha_k \mathbf{A p}_k \\
-                                        & \qquad \hbox{si } \mathbf{r}_{k+1} \text{ es
-                                        suficientemente pequeño, salir del bucle} \\
-                                        & \qquad \beta_k :=
-                                        \frac{\mathbf{r}_{k+1}^\mathsf{T}
-                                        \mathbf{r}_{k+1}}{\mathbf{r}_k^\mathsf{T}
-                                        \mathbf{r}_k} \\
-                                        & \qquad \mathbf{p}_{k+1} := \mathbf{r}_{k+1} +
-                                        \beta_k \mathbf{p}_k \\
-                                        & \qquad k := k + 1 \\
-                                        & \text{termina bucle} \\
-                                        & \text{regresa } \mathbf{x}_{k+1} \text{ como el
-                                        resultado}
-                                        \end{align}
-                                        \]
-                                    </section>
-                                    <section>
-                                        <p class="fragment fade-out">\( \alpha_k \) son los
-                                        coeficientes de la combinación lineal en \(
-                                        \mathcal{K}_{residuos} \).</p>
-                                        <p class="fragment fade-in">\( \beta_k \) son los
-                                        coeficientes de la combinación lineal en \(
-                                        \mathcal{K}_r \).</p>
-                                    </section>
-                                </section>
-                                <section>
-                                    <h3>Condiciones</h3>
-                                    <p class="fragment">El método del gradiente conjugado
-                                    solamente funciona si la matriz \( A \) es
-                                    <b>simétrica</b> y <b>definida positiva.</b></p>
-                                    <p class="fragment fade-in">Si no lo es, otro método
-                                    debe emplearse.</p>
-                                </section>
-                                <section>
-                                    <h3>Alternativas</h3>
-                                    <ol>
-                                        <li>GMRES (Generalized minimal residual
-                                            method)</li>
-                                        <li>BiCG (Biconjugate gradient method)</li>
-                                        <li>BiCGSTAB (Biconjugate gradient stabilized method)</li>
-                                    </ol>
-                                </section>
-                                <section data-background-color="rgb(220, 180, 130)">
-                                    <h3>Dinámica Browniana</h3>
-                                    <section>
-                                        \[
-                                        \mathbf{r}(t+\Delta t)=\mathbf{r}(t)+\frac{\Delta
-                                        t}{k_B T} \mathbf{DF}+(\nabla \cdot \mathbf{D})
-                                        \Delta t + \mathbf{g}
-                                        \]
-                                        donde \( \langle \mathbf{g} \rangle = 0 \) y
-                                        \( \langle \mathbf{gg^T} \rangle = 2 \mathbf{D}\Delta t
-                                        .\)
-                                    </section>
-                                    <section>
-                                        Esto significa que \( \mathbf{g} \) sigue una
-                                        distribución normal <em>multivariada</em> con
-                                        vector de medias zero y matriz de covarianza \( 2
-                                        \mathbf{D}\Delta t .\)
-                                    </section>
-                                    <section>
-                                        Normalmente, esto se calcula así
-                                        \[
-                                        \mathbf{g}=\sqrt{2\Delta
-                                        t}\mathbf{y}=\sqrt{2\Delta t}\mathbf{Bz}
-                                        \]
-                                        con
-                                        \[
-                                        \mathbf{D}=\mathbf{BB^T}
-                                        \]
-                                        y \( \mathbf{z} \) sigue una distribución normal
-                                        estándar <em>univariada</em>.
-                                    </section>
-                                    <section>
-                                        En el algoritmo original de Ermak-McCammon, esto
-                                        se hace con una <b>descomposición de Cholesky</b>,
-                                        pero considerando que el tensor \( \mathbf{D} \)
-                                        es de tamaño \( 3n \times 3n \) con \( n \) el
-                                        número de partículas, esto se vuelve impráctico
-                                        rápidamente.
-                                    </section>
-                                    <section>
-                                        <p class="fragment fade-in">En el 2012, Ando <em>et al.</em> propusieron
-                                        emplear métodos de subespacios de Krylov.</p>
-                                        <p class="fragment fade-in">Se dieron cuenta que
-                                        el problema es calcular \( \mathbf{D^{1/2}}
-                                        .\)</p>
-                                        <p class="fragment fade-in">Además, se
-                                        dieron cuenta que no necesitan saber exactamente
-                                        \( \mathbf{D^{1/2}} \) sino \( \mathbf{D^{1/2} z}
-                                        .\)</p>
-                                        <p class="fragment fade-up">Después de todo,
-                                        solamente son desplazamientos estocásticos, no
-                                        deben ser <em>precisos</em>, sino aproximados.</p>
-                                    </section>
-                                </section>
-                                <section data-background-color="rgb(220, 180, 130)">
-                                    <section>
-                                    <h3>Propuesta</h3>
-                                        Construir un subespacio de Krylov para realizar
-                                        esta aproximación, tal que
-                                        \[
-                                        \mathcal{K}_m(\mathbf{D, z})=\text{span } \{
-                                        \mathbf{z}, \mathbf{Dz}, \mathbf{D^{1/2}z}, \dots,
-                                        \mathbf{D^{m-1}z} \}
-                                        \]
-                                    </section>
-                                    <section>
-                                        <h3>Asignaciones</h3>
-                                        \[
-                                        \mathbf{z} \sim \mathcal{N}(0, \mathbf{I}) \\
-                                        j := 0 \text{ contador de bucle} \\
-                                        \qquad v_0 := \frac{\mathbf{z}}{\lVert
-                                        \mathbf{z}
-                                        \rVert} \\
-                                        m := 30 \text{ el tamaño del subespacio de Krylov}
-                                        \\
-                                        \]
-                                    </section>
-                                    <section>
-                                        \[
-                                        \begin{align}
-                                        & \text{inicia bucle, desde j hasta m} \\
-                                        & \qquad \mathbf{w} :=\mathbf{D} \mathbf{v}_j \\
-                                        & \qquad \text{si } j > 0 \\
-                                        & \qquad \quad \mathbf{w}=\mathbf{w}-h_{j-1,j} \mathbf{v}_{j-1}
-                                        \\
-                                        & \qquad h_{j,j}=\mathbf{w^T} \mathbf{v}_j \\
-                                        & \text{si } j < m \\
-                                        & \qquad \quad \mathbf{w}=\mathbf{w}-h_{j,j} \mathbf{v}_{j}
-                                        \\
-                                        & \qquad \quad h_{j+1,j}=h_{j,j+1}=\lVert
-                                         \mathbf{w} \rVert \\
-                                         & \qquad \quad
-                                         \mathbf{v}_{j+1}=\frac{\mathbf{w}}{h_{j+1,j}} \\
-                                        \end{align}
-                                        \]
-                                    </section>
-                                    <section>
-                                        El resultado aproximado es
-                                        \[
-                                        \widetilde{\mathbf{y}} = \lVert \mathbf{z} \rVert \mathbf{V}_m
-                                        \mathbf{H}_m^{1/2} \mathbf{e}_1
-                                        \]
-                                    </section>
-                                    <section>
-                                        <p class="fragment fade-in">Se hizo una
-                                        aproximación de la matriz \( D^{1/2} \); esta
-                                        aproximación es la matriz \( H^{1/2} .\)</p>
-                                        <p class="fragment fade-in">Se va ortognalizando
-                                        el espacio según se necesiten vectores.</p>
-                                        <p class="fragment fade-in">Pasamos de un espacio
-                                        de \( 3n \times 3n \) a un espacio \( m \times m
-                                        \) donde \( m \ll 3n \), en este caso, \( m
-                                        \equiv 30 .\)</p>
-                                    </section>
-                                </section>
-                                <section data-background-color="rgb(220, 180, 130)">
-                                    <section>
-                                    <pre><code data-trim data-noescape
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="../reveal.js/plugin/highlight/monokai.css" id="highlight-theme">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section id="title">
+                <h2>Métodos de subespacios de Krylov</h2>
+                <h4>y sus aplicaciones a la Dinámica Browniana</h4>
+                <h3>Edwin Armando Bedolla Montiel</h3>
+                <h5>12 de febrero, 2021, Grupo de Materia Blanda.</h5>
+            </section>
+            <section id="toc">
+                <h3>Contenido</h3>
+                <ol>
+                    <li>¿Qué son los métodos de subespacios de
+                        Krylov?</li>
+                    <li>Ejemplos: sistemas lineales y regresión
+                        lineal.</li>
+                    <li>Interacciones hidrodinámicas en dinámica
+                        Browniana.</li>
+                </ol>
+            </section>
+            <section>
+                <h3>Definición</h3>
+                Sea \( A \) una matriz invertible de \( n \times n \), y sea
+                \( b \) un vector de dimensión \( n \), entonces, un
+                subespacio de Krylov de orden \( r \) está definido
+                como
+                \[\begin{equation}
+                \mathcal{K}_r(A, b) = \text{span} \{ b, Ab, A^2 b, A^3 b,
+                \dots, A^{r-1} b\}
+                \end{equation}
+                \]
+                <aside class="notes">
+                    Una matriz es invertible si se cumplen cualquiera
+                    de las <a href="https://mathworld.wolfram.com/InvertibleMatrixTheorem.html">23
+                        características</a>
+                    del teorema de la inversa de una matriz. Una de
+                    ellas es que el determinante sea diferente de
+                    cero.
+
+                    span = extendido
+                </aside>
+            </section>
+            <section>
+                <section>
+                    <h3>Aproximaciones</h3>
+                    Esto significa que podemos crear un subespacio
+                    lineal usando solamente el producto \( Ab. \)
+                </section>
+                <section>
+                    Para visualizar esto, podemos pensar en las series
+                    de Taylor
+                    \[
+                    f(x-a)=\sum_{n=0}^{\infty}\frac{f^{(n)}(a)}{n!}(x-a)^n
+                    \]
+                </section>
+                <section>
+                    Las series de Taylor nos dan una buena
+                    aproximación de la función \( f(x). \)
+                </section>
+                <section>
+                    \[ e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} \]
+                </section>
+                <section>
+                    \[ e^1 = \sum_{n=0}^{N=10}
+                    \frac{1^n}{n!}=2.718281801146385 \]
+                    \[ e = 2.718281828459045 \]
+                    <aside class="notes">
+                        Se obtiene una buena aproximación hasta la
+                        séptima cifra.
+                    </aside>
+                </section>
+                <section>
+                    De la misma forma, el subespacio de Krylov \(
+                    \mathcal{K}_r \) nos permite construir un espacio
+                    donde, con pocos vectores base, podemos encontrar
+                    una buena aproximación.
+                </section>
+            </section>
+            <section>
+                <section>
+                    ¿En qué tipo de <b>problemas</b> puedo aplicar estos métodos?
+                </section>
+                <section>
+                    <h3>Regresión lineal</h3>
+                    Se quiere resolver el problema
+                    \[ \mathbf{y}=\mathbf{X \beta} + \mathbf{\epsilon} \]
+                    <aside class="notes">
+                        Epsilon es un "ruido blanco", o "ruido
+                        gaussiano". Es ruido en las mediciones.
+                    </aside>
+                </section>
+                <section>
+                    <img src="assets/regression.png" />
+                </section>
+                <section>
+                    Se reorganiza el problema a un <b>sistema
+                        lineal</b>
+                    \[ \mathbf{X^T y} = \mathbf{X^T X \beta} \]
+                    donde ahora se multiplica por la matriz
+                    transpuesta para que la matriz \( X^T X \) sea una
+                    matriz cuadrada.
+                    <aside class="notes">
+                        Esta matriz se conoce como matriz normal o
+                        matriz de cofactores de beta
+                    </aside>
+                </section>
+                <section>
+                    Para problemas pequeños, la solución al problema
+                    es simple. Uno de lo más conocidos es mediante la
+                    descomposición \( LU \).
+                </section>
+                <section>
+                    Toda matriz cuadrada tiene descomposición
+                    \[ PA = LU \]
+                    donde \( P \) es una matriz de permutaciones entre
+                    las filas; \( L \) es una matriz triangular
+                    <em>inferior</em>; y \( U \) es una matriz tringular
+                    <em>superior</em>.
+                </section>
+                <section>
+                    La solución es, entonces
+                    \[ P \mathbf{y} = P \mathbf{X^T X \beta} = LU
+                    \beta \]
+                    Es decir, primero se resuelve el problema
+                    \[ Lz = P\mathbf{y} \]
+                    y luego
+                    \[ U \mathbf{\beta} = z \]
+                </section>
+                <section>
+                    Pero <b>¡ojo!</b>, nótese que la operación
+                    \[ \mathbf{X^T \beta} \]
+                    da como resultado a un vector, y aún más, ¡se
+                    parece a nuestra definición de \( \mathcal{K}_r
+                    \)!
+                </section>
+            </section>
+            <section>
+                <h3>Método del gradiente conjugado</h3>
+                <section>
+                    Podemos entonces construir un subespacio de Krylov
+                    tal que
+                    \[
+                    \mathcal{K}_r (\mathbf{X}^T \mathbf{X}, \mathbf{X}^T \beta) \equiv \text{span} \{
+                    \mathbf{X}^T \beta, (\mathbf{X}^T \mathbf{X})
+                    \mathbf{X}^T \beta, \\
+                    (\mathbf{X}^T \mathbf{X})^2 \mathbf{X}^T \beta,
+                    \\ (\mathbf{X}^T \mathbf{X})^3 \mathbf{X}^T \beta,
+                    \dots, (\mathbf{X}^T \mathbf{X})^{r-1} \mathbf{X}^T \beta \}
+                    \]
+                </section>
+                <section>
+                    Dado que es un <em>espacio lineal</em> nos
+                    preguntamos, entonces, ¿cuál es la
+                    <b>mejor</b> combinación lineal que resuelve el
+                    problema?
+                </section>
+                <section>
+                    El método del <b>gradiente conjugado</b> nos dice
+                    que la mejor combinación es aquella donde se
+                    cumpla que \( \mathbf{r} \) definido como
+                    \[ \mathbf{r}=\mathbf{y} - \mathbf{X} \beta \]
+                    y conocido como <em>residuo</em> sea
+                    <b>ortogonal</b> a \( \mathcal{K}_r \).
+                </section>
+                <section>
+                    Sin embargo, es impráctico crear todo el espacio \( \mathcal{K}_r \)
+                    pues no se necesitan todos los vectores base.
+                </section>
+                <section>
+                    La solución es simple, de forma iterativa, vamos
+                    ortogonalizando (el proceso de Gram-Schmidt) hasta
+                    que nuestra base tenga suficientes vectores tal
+                    que el resultado es <em>suficientemente
+                        bueno</em>.
+                </section>
+                <section>
+                    Esta base tiene una propiedad, todo vector residuo
+                    es un vector <b>conjugado</b> respecto a los
+                    vectores del espacio \( \mathcal{K}_r \).
+                </section>
+                <section>
+                    Esto significa que, mientras ortogonalizamos \( \mathcal{K}_r \)
+                    iremos ortogonalizando el nuevo espacio \(
+                    \mathcal{K}_{residuos} \).
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h3>Implementación</h3>
+                    Este algoritmo es rápido, y tiene la gran ventaja
+                    de que es fácil de implementar.
+                </section>
+                <section>
+                    <h3>Definiciones y asignaciones</h3>
+                    Sea \( A=\mathbf{X^T X} \) y \( \mathbf{b} =
+                    \mathbf{X^T y} \),
+                    entonces
+                    \[
+                    \begin{align}
+                    & x_0 := \mathbf{0} \text{ solución inicial} \\
+                    & \mathbf{r}_0 := \mathbf{b} - \mathbf{A x}_0 \\
+                    & \mathbf{p}_0 := \mathbf{r}_0 \\
+                    & k := 0 \\
+                    \end{align}
+                    \]
+                    Aquí, \( \mathbf{p} \) es la notación para los
+                    vectores base que formarán el espacio lineal de
+                    los residuos, \( \mathcal{K}_{residuos} \).
+                </section>
+                <section>
+                    \[
+                    \begin{align}
+                    & \text{inicia bucle} \\
+                    & \qquad \alpha_k := \frac{\mathbf{r}_k^\mathsf{T}
+                    \mathbf{r}_k}{\mathbf{p}_k^\mathsf{T} \mathbf{A
+                    p}_k} \\
+                    & \qquad \mathbf{x}_{k+1} := \mathbf{x}_k +
+                    \alpha_k \mathbf{p}_k \\
+                    & \qquad \mathbf{r}_{k+1} := \mathbf{r}_k -
+                    \alpha_k \mathbf{A p}_k \\
+                    & \qquad \hbox{si } \mathbf{r}_{k+1} \text{ es
+                    suficientemente pequeño, salir del bucle} \\
+                    & \qquad \beta_k :=
+                    \frac{\mathbf{r}_{k+1}^\mathsf{T}
+                    \mathbf{r}_{k+1}}{\mathbf{r}_k^\mathsf{T}
+                    \mathbf{r}_k} \\
+                    & \qquad \mathbf{p}_{k+1} := \mathbf{r}_{k+1} +
+                    \beta_k \mathbf{p}_k \\
+                    & \qquad k := k + 1 \\
+                    & \text{termina bucle} \\
+                    & \text{regresa } \mathbf{x}_{k+1} \text{ como el
+                    resultado}
+                    \end{align}
+                    \]
+                </section>
+                <section>
+                    <p class="fragment fade-out">\( \alpha_k \) son los
+                        coeficientes de la combinación lineal en \(
+                        \mathcal{K}_{residuos} \).</p>
+                    <p class="fragment fade-in">\( \beta_k \) son los
+                        coeficientes de la combinación lineal en \(
+                        \mathcal{K}_r \).</p>
+                </section>
+            </section>
+            <section>
+                <h3>Condiciones</h3>
+                <p class="fragment">El método del gradiente conjugado
+                    solamente funciona si la matriz \( A \) es
+                    <b>simétrica</b> y <b>definida positiva.</b>
+                </p>
+                <p class="fragment fade-in">Si no lo es, otro método
+                    debe emplearse.</p>
+            </section>
+            <section>
+                <h3>Alternativas</h3>
+                <ol>
+                    <li>GMRES (Generalized minimal residual
+                        method)</li>
+                    <li>BiCG (Biconjugate gradient method)</li>
+                    <li>BiCGSTAB (Biconjugate gradient stabilized method)</li>
+                </ol>
+            </section>
+            <section data-background-color="rgb(220, 180, 130)">
+                <h3>Dinámica Browniana</h3>
+                <section>
+                    \[
+                    \mathbf{r}(t+\Delta t)=\mathbf{r}(t)+\frac{\Delta
+                    t}{k_B T} \mathbf{DF}+(\nabla \cdot \mathbf{D})
+                    \Delta t + \mathbf{g}
+                    \]
+                    donde \( \langle \mathbf{g} \rangle = 0 \) y
+                    \( \langle \mathbf{gg^T} \rangle = 2 \mathbf{D}\Delta t
+                    .\)
+                </section>
+                <section>
+                    Esto significa que \( \mathbf{g} \) sigue una
+                    distribución normal <em>multivariada</em> con
+                    vector de medias zero y matriz de covarianza \( 2
+                    \mathbf{D}\Delta t .\)
+                </section>
+                <section>
+                    Normalmente, esto se calcula así
+                    \[
+                    \mathbf{g}=\sqrt{2\Delta
+                    t}\mathbf{y}=\sqrt{2\Delta t}\mathbf{Bz}
+                    \]
+                    con
+                    \[
+                    \mathbf{D}=\mathbf{BB^T}
+                    \]
+                    y \( \mathbf{z} \) sigue una distribución normal
+                    estándar <em>univariada</em>.
+                </section>
+                <section>
+                    En el algoritmo original de Ermak-McCammon, esto
+                    se hace con una <b>descomposición de Cholesky</b>,
+                    pero considerando que el tensor \( \mathbf{D} \)
+                    es de tamaño \( 3n \times 3n \) con \( n \) el
+                    número de partículas, esto se vuelve impráctico
+                    rápidamente.
+                </section>
+                <section>
+                    <p class="fragment fade-in">En el 2012, Ando <em>et al.</em> propusieron
+                        emplear métodos de subespacios de Krylov.</p>
+                    <p class="fragment fade-in">Se dieron cuenta que
+                        el problema es calcular \( \mathbf{D^{1/2}}
+                        .\)</p>
+                    <p class="fragment fade-in">Además, se
+                        dieron cuenta que no necesitan saber exactamente
+                        \( \mathbf{D^{1/2}} \) sino \( \mathbf{D^{1/2} z}
+                        .\)</p>
+                    <p class="fragment fade-up">Después de todo,
+                        solamente son desplazamientos estocásticos, no
+                        deben ser <em>precisos</em>, sino aproximados.</p>
+                </section>
+            </section>
+            <section data-background-color="rgb(220, 180, 130)">
+                <section>
+                    <h3>Propuesta</h3>
+                    Construir un subespacio de Krylov para realizar
+                    esta aproximación, tal que
+                    \[
+                    \mathcal{K}_m(\mathbf{D, z})=\text{span } \{
+                    \mathbf{z}, \mathbf{Dz}, \mathbf{D^{1/2}z}, \dots,
+                    \mathbf{D^{m-1}z} \}
+                    \]
+                </section>
+                <section>
+                    <h3>Asignaciones</h3>
+                    \[
+                    \mathbf{z} \sim \mathcal{N}(0, \mathbf{I}) \\
+                    j := 0 \text{ contador de bucle} \\
+                    \qquad v_0 := \frac{\mathbf{z}}{\lVert
+                    \mathbf{z}
+                    \rVert} \\
+                    m := 30 \text{ el tamaño del subespacio de Krylov}
+                    \\
+                    \]
+                </section>
+                <section>
+                    \[
+                    \begin{align}
+                    & \text{inicia bucle, desde j hasta m} \\
+                    & \qquad \mathbf{w} :=\mathbf{D} \mathbf{v}_j \\
+                    & \qquad \text{si } j > 0 \\
+                    & \qquad \quad \mathbf{w}=\mathbf{w}-h_{j-1,j} \mathbf{v}_{j-1}
+                    \\
+                    & \qquad h_{j,j}=\mathbf{w^T} \mathbf{v}_j \\
+                    & \text{si } j < m \\ & \qquad \quad \mathbf{w}=\mathbf{w}-h_{j,j} \mathbf{v}_{j} \\ & \qquad \quad
+                        h_{j+1,j}=h_{j,j+1}=\lVert \mathbf{w} \rVert \\ & \qquad \quad
+                        \mathbf{v}_{j+1}=\frac{\mathbf{w}}{h_{j+1,j}} \\ \end{align} \] </section>
+                        <section>
+                            El resultado aproximado es
+                            \[
+                            \widetilde{\mathbf{y}} = \lVert \mathbf{z} \rVert \mathbf{V}_m
+                            \mathbf{H}_m^{1/2} \mathbf{e}_1
+                            \]
+                        </section>
+                        <section>
+                            <p class="fragment fade-in">Se hizo una
+                                aproximación de la matriz \( D^{1/2} \); esta
+                                aproximación es la matriz \( H^{1/2} .\)</p>
+                            <p class="fragment fade-in">Se va ortognalizando
+                                el espacio según se necesiten vectores.</p>
+                            <p class="fragment fade-in">Pasamos de un espacio
+                                de \( 3n \times 3n \) a un espacio \( m \times m
+                                \) donde \( m \ll 3n \), en este caso, \( m
+                                \equiv 30 .\)</p>
+                        </section>
+                </section>
+                <section data-background-color="rgb(220, 180, 130)">
+                    <section>
+                        <pre><code data-trim data-noescape
                                     data-line-numbers="1-2|4|6|9|11-15|18|19|20|21">
                                     znorm = dnrm2( s,xr,1 )
                                     vm(:,1) = xr / znorm
@@ -416,192 +411,187 @@
                                     call dgemv( 'N',s,m,1.0_dp,vm,s,v,1,0.0_dp,res,1 )
                                     r = znorm * res
                                     </code></pre>
-                                    </section>
-                                   <section>
-                                       <img data-src="assets/repositorio.png"/>
-                                   </section>
-                               </section>
-                               <section>
-                                   <h2>Conclusiones</h2>
-                                   <ol>
-                                       <li><p class="fragment fade-in">Los métodos de subespacios de Krylov son
-                                           métodos iterativos para encontrar resultados
-                                           aproximados.</p></li>
-                                       <li><p class="fragment fade-in">Dependiendo de las propiedades de las matrices
-                                           (u <em>operadores lineales</em>), se deben
-                                           emplear variaciones de estos métodos.</p></li>
-                                       <li><p class="fragment fade-in">Se estudió un caso particular aplicado a la
-                                           dinámica Browniana.</p></li>
-                                   </ol>
-                               </section>
-                               <section>
-                                   <section>
-                                       <h2>¿Dónde encontrar estas implementaciones?</h2>
-                                   </section>
-                                   <section>
-                                       <h3>Fortran</h2>
-                                       <ul>
-                                           <li><a
-                                                   href="https://www.mcs.anl.gov/petsc/">PETSc/TAO</a>,
-                                               sistemas lineales, sistemas de ecuaciones
-                                               diferenciales ordinarias y parciales.
-                                               (Argonne National Laboratory)
-                                           </li>
-                                           <li>
-                                               <a
-                                                   href="https://www.caam.rice.edu/software/ARPACK/">ARPACK</a>
-                                               para aplicar métodos de subespacios de
-                                               Krylov para encontrar valores y vectores
-                                               propios de sistemas muy grandes. (Rice
-                                               University y Sandia National Laboratory)
-                                           </li>
-                                       </ul>
-                                   </section>
-                                   <section>
-                                       <h3>Python</h3>
-                                       <ul>
-                                           <li>
-                                               <a
-                                                   href="https://docs.scipy.org/doc/scipy/reference/sparse.linalg.html">Scipy</a>
-                                               , contiene una colección de estos métodos,
-                                               algunos son envolturas (e.g. ARPACK), pero
-                                               ya no es necesario implementarlos.
-                                           </li>
-                                       </ul>
-                                   </section>
-                                   <section>
-                                       <h3>Julia</h3>
-                                       <ul>
-                                           <li>
-                                           <a
-                                               href="https://github.com/JuliaLinearAlgebra/IterativeSolvers.jl">IterativeSolvers</a>
-                                           , es un paquete con una colección de rutinas
-                                           para sistemas lineales.
-                                           </li>
-                                           <li>
-                                               <a
-                                                   href="https://github.com/JuliaSmoothOptimizers/Krylov.jl">Krylov</a>
-                                               , acepta no solamente matrices, sino
-                                               cualquier tipo de operador lineal.
-                                           </li>
-                                       </ul>
-                                       <aside class="notes">
-                                           Julia es el lenguaje que más utilizo, si
-                                           alguien tiene interés en aprenderlo, o si
-                                           alguien más lo usa, avísenme, para platicar.
-                                       </aside>
-                                   </section>
-                               </section>
-                               <section>
-                                   <section>
-                                   <h3>Referencias</h3>
-                                   <ol>
-                                       <li>Strang, G. (1993). <em>Introduction to linear algebra (Vol.
-                                               3)</em>. Wellesley, MA: Wellesley-Cambridge Press.
-                                       </li>
-                                       <li>
-                                           Demmel, J. W. (1997). <em>Applied numerical linear
-                                           algebra</em>. Society for Industrial and Applied
-                                           Mathematics.
-                                       </li>
-                                       <li>
-                                           Van der Vorst, H. A. (2003). <em>Iterative Krylov
-                                           methods for large linear systems</em> (No. 13).
-                                           Cambridge University Press.
-                                       </li>
-                                       <li>
-                                           Hestenes, M. R., &amp; Stiefel, E. (1952). <em>Methods
-                                           of conjugate gradients for solving linear
-                                           systems</em> (Vol. 49, No. 1). Washington, DC: NBS.
-                                       </li>
-                                       </ol>
-                                   </section>
-                                   <section>
-                                       <h3>Referencias</h3>
-                                       <ol>
-                                           <li>
-                                               Cipra, B. A. (2000). The best of the 20th
-                                               century: Editors name top 10 algorithms.
-                                               <em>SIAM news</em>, 33(4), 1-2.
-                                           </li>
-                                           <li>
-                                               Gutknecht, M. H. (2007). A brief
-                                               introduction to Krylov space methods for
-                                               solving linear systems. In <em>Frontiers of
-                                               Computational Science</em> (pp. 53-62).
-                                               Springer, Berlin, Heidelberg.
-                                           </li>
-                                           <li>
-                                               Ermak, D. L., &amp; McCammon, J. A. (1978).
-                                               Brownian dynamics with hydrodynamic
-                                               interactions. <em>The Journal of chemical
-                                               physics</em>, 69(4), 1352-1360.
-                                           </li>
-                                           <li>
-                                               Ando, T., Chow, E., Saad, Y., &amp; Skolnick,
-                                               J. (2012). Krylov subspace methods for
-                                               computing hydrodynamic interactions in
-                                               Brownian dynamics simulations. <em>The Journal
-                                               of chemical physics</em>, 137(6), 064106.
-                                       </ol>
-                                   </section>
-                               </section>
-                               <section>
-                                   <h2>Proyectos</h2>
-                                       <ul>
-                                           <li><a
-                                                   href="https://github.com/edwinb-ai/dbfort">dbfort</a>
-                                                Dinámica Browniana en Fortran 2008+.
-                                           </li>
-                                           <li>
-                                               <a
-                                                   href="https://github.com/edwinb-ai/LeastSquaresSVM">LeastSquaresSVM</a>
-                                               Machine Learning con Máquinas de Soporte
-                                               Vectorial.
-                                           </li>
-                                       </ul>
-                                       <ul class="social-icons">
-                                           <li><a
-                                                   href="https://github.com/edwinb-ai"><img
-                                                   src="assets/github.svg"/>GitHub</a></li>
-                                           <li><a
-                                                   href="https://gitlab.com/developEdwin"><img
-                                                   src="assets/tanuki.svg"/>GitLab</a></li>
-                                           <li><img
-                                               src="assets/mail.svg"/>ea.bedollamontiel</li>
-                                       </ul>
-                                       <aside class="notes">
-                                           Aproximación es el nombre del juego, aunque las
-                                           computadoras cada vez se hacen más rápidas, los
-                                           problemas a resolver cada vez se hacen más
-                                           grandes. Espero que la semblanza de los métodos que he
-                                           mostrado hoy les ayuden a motivarse para
-                                           utilizarlos en su día a día. En caso
-                                           de que alguno de los proyectos les interese,
-                                           los invito a acercarse, dado que es una gran
-                                           oportunidad para colaborar y aprender sobre
-                                           estos métodos. Es todo de mi parte.
-                                       </aside>
-                               </section>
-			</div>
-		</div>
+                    </section>
+                    <section>
+                        <img data-src="assets/repositorio.png" />
+                    </section>
+                </section>
+                <section>
+                    <h2>Conclusiones</h2>
+                    <ol>
+                        <li>
+                            <p class="fragment fade-in">Los métodos de subespacios de Krylov son
+                                métodos iterativos para encontrar resultados
+                                aproximados.</p>
+                        </li>
+                        <li>
+                            <p class="fragment fade-in">Dependiendo de las propiedades de las matrices
+                                (u <em>operadores lineales</em>), se deben
+                                emplear variaciones de estos métodos.</p>
+                        </li>
+                        <li>
+                            <p class="fragment fade-in">Se estudió un caso particular aplicado a la
+                                dinámica Browniana.</p>
+                        </li>
+                    </ol>
+                </section>
+                <section>
+                    <section>
+                        <h2>¿Dónde encontrar estas implementaciones?</h2>
+                    </section>
+                    <section>
+                        <h3>Fortran</h2>
+                            <ul>
+                                <li><a href="https://www.mcs.anl.gov/petsc/">PETSc/TAO</a>,
+                                    sistemas lineales, sistemas de ecuaciones
+                                    diferenciales ordinarias y parciales.
+                                    (Argonne National Laboratory)
+                                </li>
+                                <li>
+                                    <a href="https://www.caam.rice.edu/software/ARPACK/">ARPACK</a>
+                                    para aplicar métodos de subespacios de
+                                    Krylov para encontrar valores y vectores
+                                    propios de sistemas muy grandes. (Rice
+                                    University y Sandia National Laboratory)
+                                </li>
+                            </ul>
+                    </section>
+                    <section>
+                        <h3>Python</h3>
+                        <ul>
+                            <li>
+                                <a href="https://docs.scipy.org/doc/scipy/reference/sparse.linalg.html">Scipy</a>
+                                , contiene una colección de estos métodos,
+                                algunos son envolturas (e.g. ARPACK), pero
+                                ya no es necesario implementarlos.
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Julia</h3>
+                        <ul>
+                            <li>
+                                <a href="https://github.com/JuliaLinearAlgebra/IterativeSolvers.jl">IterativeSolvers</a>
+                                , es un paquete con una colección de rutinas
+                                para sistemas lineales.
+                            </li>
+                            <li>
+                                <a href="https://github.com/JuliaSmoothOptimizers/Krylov.jl">Krylov</a>
+                                , acepta no solamente matrices, sino
+                                cualquier tipo de operador lineal.
+                            </li>
+                        </ul>
+                        <aside class="notes">
+                            Julia es el lenguaje que más utilizo, si
+                            alguien tiene interés en aprenderlo, o si
+                            alguien más lo usa, avísenme, para platicar.
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h3>Referencias</h3>
+                        <ol>
+                            <li>Strang, G. (1993). <em>Introduction to linear algebra (Vol.
+                                    3)</em>. Wellesley, MA: Wellesley-Cambridge Press.
+                            </li>
+                            <li>
+                                Demmel, J. W. (1997). <em>Applied numerical linear
+                                    algebra</em>. Society for Industrial and Applied
+                                Mathematics.
+                            </li>
+                            <li>
+                                Van der Vorst, H. A. (2003). <em>Iterative Krylov
+                                    methods for large linear systems</em> (No. 13).
+                                Cambridge University Press.
+                            </li>
+                            <li>
+                                Hestenes, M. R., &amp; Stiefel, E. (1952). <em>Methods
+                                    of conjugate gradients for solving linear
+                                    systems</em> (Vol. 49, No. 1). Washington, DC: NBS.
+                            </li>
+                        </ol>
+                    </section>
+                    <section>
+                        <h3>Referencias</h3>
+                        <ol>
+                            <li>
+                                Cipra, B. A. (2000). The best of the 20th
+                                century: Editors name top 10 algorithms.
+                                <em>SIAM news</em>, 33(4), 1-2.
+                            </li>
+                            <li>
+                                Gutknecht, M. H. (2007). A brief
+                                introduction to Krylov space methods for
+                                solving linear systems. In <em>Frontiers of
+                                    Computational Science</em> (pp. 53-62).
+                                Springer, Berlin, Heidelberg.
+                            </li>
+                            <li>
+                                Ermak, D. L., &amp; McCammon, J. A. (1978).
+                                Brownian dynamics with hydrodynamic
+                                interactions. <em>The Journal of chemical
+                                    physics</em>, 69(4), 1352-1360.
+                            </li>
+                            <li>
+                                Ando, T., Chow, E., Saad, Y., &amp; Skolnick,
+                                J. (2012). Krylov subspace methods for
+                                computing hydrodynamic interactions in
+                                Brownian dynamics simulations. <em>The Journal
+                                    of chemical physics</em>, 137(6), 064106.
+                        </ol>
+                    </section>
+                </section>
+                <section>
+                    <h2>Proyectos</h2>
+                    <ul>
+                        <li><a href="https://github.com/edwinb-ai/dbfort">dbfort</a>
+                            Dinámica Browniana en Fortran 2008+.
+                        </li>
+                        <li>
+                            <a href="https://github.com/edwinb-ai/LeastSquaresSVM">LeastSquaresSVM</a>
+                            Machine Learning con Máquinas de Soporte
+                            Vectorial.
+                        </li>
+                    </ul>
+                    <ul class="social-icons">
+                        <li><a href="https://github.com/edwinb-ai"><img src="assets/github.svg" />GitHub</a></li>
+                        <li><a href="https://gitlab.com/developEdwin"><img src="assets/tanuki.svg" />GitLab</a></li>
+                        <li><img src="assets/mail.svg" />ea.bedollamontiel</li>
+                    </ul>
+                    <aside class="notes">
+                        Aproximación es el nombre del juego, aunque las
+                        computadoras cada vez se hacen más rápidas, los
+                        problemas a resolver cada vez se hacen más
+                        grandes. Espero que la semblanza de los métodos que he
+                        mostrado hoy les ayuden a motivarse para
+                        utilizarlos en su día a día. En caso
+                        de que alguno de los proyectos les interese,
+                        los invito a acercarse, dado que es una gran
+                        oportunidad para colaborar y aprender sobre
+                        estos métodos. Es todo de mi parte.
+                    </aside>
+                </section>
+        </div>
+    </div>
 
-		<script src="../reveal.js/dist/reveal.js"></script>
-		<script src="../reveal.js/plugin/notes/notes.js"></script>
-		<script src="../reveal.js/plugin/markdown/markdown.js"></script>
-		<script src="../reveal.js/plugin/highlight/highlight.js"></script>
-                <script src="../reveal.js/plugin/math/math.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+    <script src="../reveal.js/dist/reveal.js"></script>
+    <script src="../reveal.js/plugin/notes/notes.js"></script>
+    <script src="../reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="../reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="../reveal.js/plugin/math/math.js"></script>
+    <script>
+        // More info about initialization & config:
+        // - https://revealjs.com/initialization/
+        // - https://revealjs.com/config/
+        Reveal.initialize({
+            hash: true,
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes,
-                                                        RevealMath ]
-			});
-		</script>
-	</body>
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes,
+                RevealMath]
+        });
+    </script>
+</body>
+
 </html>
